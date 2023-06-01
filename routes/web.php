@@ -52,4 +52,14 @@ Route::get('/showproducts',[ListProductsController::class,"showProduct"])->name(
 //sanpham
 Route::get('trangchu', [PageController::class, "getIndex"]);
 
+Route::get('/detail/{id}',[PageController::class,'getDetail']);
+Route::get('/themgiohang/{id}', 'YourController@methodName')->name('themgiohang');
+Route::get('/type/{id}',[PageController::class,'getLoaiSp']);
+
+Route::get('Loai-san-pham/{type}',[
+    'as'=>'Loaisanpham',
+    'uses'=>'PageController@getLoaiSp'
+]);
+
+
 
