@@ -124,4 +124,5 @@ class PageController extends Controller
         return $this->getIndexAdmin();
     }
 
+    
 }
