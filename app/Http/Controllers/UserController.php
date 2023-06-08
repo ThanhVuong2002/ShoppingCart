@@ -13,7 +13,7 @@ class UserController extends Controller
     //     return view ('test') ->with (['title'=>$title,'description'=>$description,'copyright'=>$copyright]);
     // }
     public function getIndex(){
-        $name = "Cao Tuyen ";
+        $name = "Phan Thanh Vuong ";
         $age = "21 ";
         $class = "PNV ";
         $arr = ['name' => $name, 'age' => $age, 'class' => $class];
