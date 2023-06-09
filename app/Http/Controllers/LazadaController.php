@@ -32,35 +32,10 @@ class LazadaController extends Controller
         return response()->json($product);
     }
 
-    public function deleteProduct($id)
-    {
-        $product = T_lazada::find($id);
-        $fileName = 'source/image/product/' . $product->image;
-
-        if (File::exists($fileName)) {
-            File::delete($fileName);
-        }
-
-        $product->delete();
-        return response()->json(['status' => 'ok', 'msg' => 'Delete successed']);
-    }
-
-    public function editProduct(Request $request, $id)
-    {
-        $product = T_lazada::find($id);
-        $product->name = $request->input('name');
-        $product->image = $request->input('image');
-        $product->price = $request->input('price');
-        $product->shopowner = $request->input('shopowner');
-        $product->save();
-
-        return response()->json(['status' => 'ok', 'msg' => 'Edit successed']);
-    }
-
     public function uploadImage(Request $request)
     {
-        if ($request->hasFile('uploadImage')) {
-            $file = $request->file('uploadImage');
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
             $fileName = $file->getClientOriginalName();
             $file->move('source/image/product', $fileName);
 
@@ -69,4 +44,31 @@ class LazadaController extends Controller
             return response()->json(["message" => "false"]);
         }
     }
+    public function updateProduct(Request $request, $id)
+{
+    $product = T_lazada::find($id);
+    if (!$product) {
+        return response()->json(["message" => "Product not found"], 404);
+    }
+
+    $product->name = $request->input('name');
+    $product->image = $request->input('image');
+    $product->price = $request->input('price');
+    $product->shopowner = $request->input('shopowner');
+    $product->save();
+
+    return response()->json($product);
+}
+public function deleteProduct($id)
+{
+    $product = T_lazada::find($id);
+    if (!$product) {
+        return response()->json(["message" => "Product not found"], 404);
+    }
+
+    $product->delete();
+
+    return response()->json(["message" => "Product deleted"]);
+}
+
 }

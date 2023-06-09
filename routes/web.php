@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,7 +51,7 @@ Route::post('/addproduct',[ListProductsController::class,"creatSession"]);
 Route::get('/showproducts',[ListProductsController::class,"showProduct"])->name('showproducts');
 
 //sanpham
-Route::get('trangchu', [PageController::class, "getIndex"]);
+Route::get('trangchu', [PageController::class, "getIndex"])->name('trangchu');
 
 Route::get('/detail/{id}',[PageController::class,'getDetail']);
 Route::get('/themgiohang/{id}', 'YourController@methodName')->name('themgiohang');
@@ -71,7 +72,35 @@ Route::post('/admin-add-form', [PageController::class, 'postAdminAdd']);
 Route::get('/admin-edit-form/{id}', [PageController::class, 'getAdminEdit']);												
 Route::post('/admin-edit',[PageController::class,'postAdminEdit']);
 
-Route::post('/admin-delete/{id}', [PageController::class, 'postAdminDelete']);														
+Route::post('/admin-delete/{id}', [PageController::class, 'postAdminDelete']);		
+
+
+Route::get('/register',function () {						
+    return view('users.register');						
+});		
+Route::get('/login', function () {							
+    return view('users.login');							
+});					
+
+
+Route::post('/register',[UserController::class,'Register']);
+
+						
+
+Route::post('/login',[UserController::class,'Login']);
+
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
+
+Route::get('/register',function(){
+    return view('users.register');
+});
+
+Route::post('/register',[UserController::class,'Register']);
+Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
+Route::post('/login', 'App\Http\Controllers\UserController@postLogin')->name('login');
+
+
 
 
 
