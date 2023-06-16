@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\T_lazada;
@@ -8,9 +7,14 @@ use Illuminate\Support\Facades\File;
 
 class LazadaController extends Controller
 {
-    public function getProducts()
+    public function getProducts(Request $request)
     {
-        $products = T_lazada::all();
+        $search = $request->query('search');
+    
+        $products = T_lazada::when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->get();
+    
         return response()->json($products);
     }
 
@@ -44,31 +48,32 @@ class LazadaController extends Controller
             return response()->json(["message" => "false"]);
         }
     }
+
     public function updateProduct(Request $request, $id)
-{
-    $product = T_lazada::find($id);
-    if (!$product) {
-        return response()->json(["message" => "Product not found"], 404);
+    {
+        $product = T_lazada::find($id);
+        if (!$product) {
+            return response()->json(["message" => "Product not found"], 404);
+        }
+
+        $product->name = $request->input('name');
+        $product->image = $request->input('image');
+        $product->price = $request->input('price');
+        $product->shopowner = $request->input('shopowner');
+        $product->save();
+
+        return response()->json($product);
     }
 
-    $product->name = $request->input('name');
-    $product->image = $request->input('image');
-    $product->price = $request->input('price');
-    $product->shopowner = $request->input('shopowner');
-    $product->save();
+    public function deleteProduct($id)
+    {
+        $product = T_lazada::find($id);
+        if (!$product) {
+            return response()->json(["message" => "Product not found"], 404);
+        }
 
-    return response()->json($product);
-}
-public function deleteProduct($id)
-{
-    $product = T_lazada::find($id);
-    if (!$product) {
-        return response()->json(["message" => "Product not found"], 404);
+        $product->delete();
+
+        return response()->json(["message" => "Product deleted"]);
     }
-
-    $product->delete();
-
-    return response()->json(["message" => "Product deleted"]);
-}
-
 }

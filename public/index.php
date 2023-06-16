@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
@@ -35,6 +34,19 @@ require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
+| Create The Application
+|--------------------------------------------------------------------------
+|
+| Here we will load the environment and create the application instance
+| that serves as the central piece of this framework. We'll use this
+| application as an "IoC" container and router for this framework.
+|
+*/
+
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+/*
+|--------------------------------------------------------------------------
 | Run The Application
 |--------------------------------------------------------------------------
 |
@@ -44,12 +56,12 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
-
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(
     $request = Request::capture()
-)->send();
+);
+
+$response->send();
 
 $kernel->terminate($request, $response);

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class customer extends Model
+class Customer extends Model
 {
-    use HasFactory;
+    protected $table = 'customers';
+
+    // Các thuộc tính và phương thức khác của model...
 }
